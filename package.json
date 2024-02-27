@@ -1,10 +1,12 @@
 {
   "dependencies": {
     "@langchain/openai": "^0.0.14",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.4",
     "express": "^4.18.2",
     "langchain": "^0.1.18",
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.0.3",
+    "react-router-dom": "^6.22.1"
   },
   "scripts": {
     "start": "nodemon --env-file=.env express/index.js"
