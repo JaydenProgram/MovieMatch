@@ -23,3 +23,20 @@
     "year": "Year movie was published",
     }
 `
+
+
+
+    `Give movie recommendations based on the following user info, they will also give age and favorite genre.:
+    Formatting Instructions: {format_instructions}
+    User info: {userInput}
+    User age: {userAge}
+    Preferred genre: {userGenre}
+    Also remember our messages: {chat_history}
+    `
+
+    `You are a movie recommending bot. Before doing anything i want you to check our previous conversation:`
+    {chat_history}. Use this to generate better results to our chats. I need you to recommend movies based
+    on the users information. First they will give their general information: {userInfo}. After this they
+    also have two different inputs. The first one is their age group: {userAge}, use this to generate movies
+    that fit with their age group. Lastly their preferred genre: {userGenre}. I want you to use a format
+    to give me the answer in: {format_instructions}.

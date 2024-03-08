@@ -38,15 +38,14 @@ export default function TalkForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const userInput = `About: ${formData.about}, Genre: ${formData.genre}, Age: ${formData.age}`;
       const response = await fetch('http://localhost:8000/recommendations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userInput: formData.about,
-          userGenre: formData.genre,
-          userAge: formData.age,
+          userInput: userInput,
         }),
       });
 
@@ -65,6 +64,8 @@ export default function TalkForm() {
       console.error('Error fetching movie recommendations:', error);
     }
   };
+
+
   const handleCancel = () => {
     // Clear local storage and reset form data
     localStorage.removeItem('formData');

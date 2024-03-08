@@ -1,14 +1,19 @@
 {
   "dependencies": {
+    "@langchain/community": "^0.0.35",
     "@langchain/core": "^0.1.42",
     "@langchain/openai": "^0.0.14",
+    "@upstash/redis": "^1.28.4",
+    "cheerio": "^1.0.0-rc.12",
     "cors": "^2.8.5",
     "dotenv": "^16.4.4",
     "express": "^4.18.2",
+    "js-yaml": "^4.1.0",
     "langchain": "^0.1.18",
     "nodemon": "^3.0.3",
     "react-router-dom": "^6.22.1",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zod-to-json-schema": "^3.22.4"
   },
   "scripts": {
     "start": "nodemon --env-file=.env express/index.js"
