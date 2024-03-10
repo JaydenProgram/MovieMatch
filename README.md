@@ -56,3 +56,6 @@ Welcome to MovieMatch (OG), a movie recommendation system that recommends movies
 - Explore the recommended movies displayed on the interface.
 - Cancel the recommendation process at any time by clicking the "Cancel" button.
 
+## Important
+- For now both front and back (client/server) are in the same folder.
+  This means you would need to seperate these to a server and client folder if you want to use a live server for example
