@@ -14,12 +14,12 @@ Welcome to MovieMatch (OG), a movie recommendation system that recommends movies
 ## Setup Instructions
 1. Clone the repository to your local machine using the following command:
    ```
-   git clone https://github.com/your-username/movie-recommendation-system.git
+   git clone https://github.com/JaydenProgram/AIPRroject.git
    ```
 
 2. Navigate to the project directory:
    ```
-   cd movie-recommendation-system
+   cd AIProject
    ```
 
 3. Install dependencies:
@@ -29,7 +29,17 @@ Welcome to MovieMatch (OG), a movie recommendation system that recommends movies
 
 4. Create a `.env` file in the root directory and add your Azure OpenAI API key:
    ```
-   OPENAI_API_KEY=your_api_key_here
+   OPENAI_API_TYPE=<Your OpenAI API Type>
+   OPENAI_API_VERSION=<Your OpenAI API Version>
+   OPENAI_API_BASE=<Your OpenAI API Base URL>
+   AZURE_OPENAI_API_KEY=<Your Azure OpenAI API Key>
+   DEPLOYMENT_NAME=<Your Deployment Name>
+   ENGINE_NAME=<Your Engine Name>
+   INSTANCE_NAME=<Your Instance Name>
+   TMDB_API_KEY=<Your TMDB API Key>
+   BEARER_KEY=<Your Bearer Key>
+   UPSTASH_REDIS_REST_URL=<Your Upstash Redis REST URL>
+   UPSTASH_REDIS_REST_TOKEN=<Your Upstash Redis REST Token>
    ```
 
 5. Start the server:
@@ -37,20 +47,12 @@ Welcome to MovieMatch (OG), a movie recommendation system that recommends movies
    npm start
    ```
 
-6. Visit `http://localhost:3000` in your web browser to access the application.
+6. Front end is also included for this project:
+   Install the dependencies aswell and start with npm run dev.
+   This will provide a link you can use to acces the front end.
 
 ## Usage
 - Enter information about yourself, including your interests and age group, to receive personalized movie recommendations.
 - Explore the recommended movies displayed on the interface.
 - Cancel the recommendation process at any time by clicking the "Cancel" button.
 
-## Credits
-- This project utilizes the Azure OpenAI API for natural language processing.
-- Built with Node.js, Express.js, React.js, and other open-source libraries.
-
-## License
-This project is licensed under the [MIT License](LICENSE).
-
----
-
-Feel free to customize the README according to your project's specific details and add any additional sections as needed. Good luck with your project!
