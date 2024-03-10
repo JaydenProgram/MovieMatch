@@ -1,5 +1,5 @@
 import express from "express";
-import routes from "./routes.js"; // Correct import path
+import routes from "./main.js"; // Correct import path
 import cors from 'cors'; // Import cors as an ES module
 
 const app = express();

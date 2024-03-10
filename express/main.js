@@ -10,7 +10,7 @@ import {AIMessage, HumanMessage} from "@langchain/core/messages";
 import { createOpenAIFunctionsAgent } from "langchain/agents";
 import { ChatMessageHistory } from "langchain/stores/message/in_memory";
 import { RunnableSequence } from "@langchain/core/runnables";
-
+import fetchMovies from "./functions/getMovieImages.js";
 //memory imports
 import { BufferMemory } from "langchain/memory";
 import { UpstashRedisChatMessageHistory } from "@langchain/community/stores/message/upstash_redis";
@@ -24,6 +24,8 @@ router.post('/recommendations', async (req, res) => {
 
         // user input from front end
         const userInput = req.body.userInput;
+        let totalTokens;
+
         // Create the model
         const model = new ChatOpenAI({
             azureOpenAIApiKey: process.env.AZURE_OPENAI_API_KEY,
@@ -31,16 +33,25 @@ router.post('/recommendations', async (req, res) => {
             azureOpenAIApiInstanceName: process.env.INSTANCE_NAME,
             azureOpenAIApiDeploymentName: process.env.ENGINE_NAME,
             temperature: 0.2,
+            callbacks: [
+                {
+                    handleLLMEnd(output) {
+                        totalTokens =  (JSON.stringify(output.llmOutput.tokenUsage.totalTokens));
+                    },
+                },
+            ],
         });
+
 
         //Prompt Template
         const prompt = ChatPromptTemplate.fromTemplate(
-            `You are a movie recommending bot. Before doing anything i want you to check our previous conversation: {history}. This is Json and has both a HumanMessage and AIMessage. Its an array meaning the first
+            `You are a movie recommending bot that only recommends hidden gem movies. 
+                     Meaning they are most of the time old and made a long time ago. Lets keep them from before the year 2000. 
+                     Before doing anything i want you to check our previous conversation: {history}. This is Json and has both a HumanMessage and AIMessage. Its an array meaning the first
                      messages where our first chat messages, look in this content to generate better results to our chats.
                      The users information to get these recommendations is here: {userInput}
                      Format: {formatInstructions}
                     `
-
         );
 
         const upstashChatHistory = new UpstashRedisChatMessageHistory({
@@ -75,6 +86,7 @@ router.post('/recommendations', async (req, res) => {
 
         const formatInstructions = parser.getFormatInstructions();
 
+
         const chain = RunnableSequence.from([
             {
                 userInput: (initialInput) => initialInput.userInput,
@@ -93,11 +105,19 @@ router.post('/recommendations', async (req, res) => {
         // const chain = prompt.pipe(model).pipe(parser);
         // await chatHistoryInfo.addMessage(new HumanMessage(userInput));
         // Invoke OpenAI model with the constructed prompt
-        const movieRecommendations = await chain.invoke({
-            userInput,
-            formatInstructions,
-        });
+        let movieRecommendations
+        try {
+            movieRecommendations = await chain.invoke({
+                userInput,
+                formatInstructions,
+            });
+        } catch (e) {
+            console.log(e);
+        }
 
+
+
+        // This makes sure that the input and output are both seen as (1 key) important!
         let testInput = {
             userInput: userInput
         }
@@ -105,17 +125,18 @@ router.post('/recommendations', async (req, res) => {
             output: movieRecommendations.chatInfo
         }
 
-
+        // Saves the memory
         await memory.saveContext(testInput, {
             testOutput
         })
 
-        console.log(movieRecommendations)
 
-        // await chatHistoryInfo.addMessage(new AIMessage(movieRecommendations.content));
-        // console.log(movieRecommendations)
-        // Send recommendations in the response
-        res.json(movieRecommendations.recommendations);
+        // Function to fetch movie details and add poster path
+        const movieImages = await fetchMovies(movieRecommendations);
+
+
+
+        res.json({main: movieImages, chatInfo: movieRecommendations.chatInfo, totalTokens: totalTokens});
 
     } catch (error) {
         console.error("Error generating movie recommendations:", error);
