@@ -58,6 +58,9 @@ export default function TalkForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setShowChat(true);
+    const newUserMessage = <Message key={messages.length} content={formData.about} messager={"You"} icon={username}/>;
+    setMessages(prevMessages => [...prevMessages, newUserMessage]);
     try {
       const userInput = `About: ${formData.about}, Genre: ${formData.genre}, Age: ${formData.age}`;
       const response = await fetch('http://localhost:8000/recommendations', {
@@ -74,17 +77,16 @@ export default function TalkForm() {
         throw new Error('Failed to fetch movie recommendations');
       }
 
+
+
       const data = await response.json();
 
       if (data) {
         setRecommendedMovies(data.main);
         console.log(recommendedMovies);
         localStorage.setItem('aiResponse', JSON.stringify(data)); // Save AI response to local storage
-        setShowChat(true);
         setIsLoading(false);
         setTotalTokens(data.totalTokens);
-        const newUserMessage = <Message key={messages.length} content={formData.about} messager={"You"} icon={username}/>;
-        setMessages(prevMessages => [...prevMessages, newUserMessage]);
 
         const newMessage = <Message key={messages.length + 1} content={data.chatInfo} messager={"MovieMatch"} icon={varia}/>; // Update key calculation
         setMessages(prevMessages => [...prevMessages, newMessage]); // Update state using functional form
@@ -113,7 +115,7 @@ export default function TalkForm() {
 
   return (
       <>
-        <div className="input-form-container w-screen absolute z-10 items-center flex flex-col h-90">
+        <div className="input-form-container w-screen absolute z-1 items-center flex flex-col h-90">
           <div className="messages-container w-1/2 overflow-auto scrollbar-hide">
             {messages}
           </div>

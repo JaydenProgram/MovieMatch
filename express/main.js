@@ -3,12 +3,6 @@ import { ChatOpenAI } from "@langchain/openai";
 import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts";
 import { StructuredOutputParser } from "langchain/output_parsers";
 import { z } from "zod";
-import {createOpenAPIChain} from "langchain/chains";
-import * as fs from "fs";
-import yaml from "js-yaml";
-import {AIMessage, HumanMessage} from "@langchain/core/messages";
-import { createOpenAIFunctionsAgent } from "langchain/agents";
-import { ChatMessageHistory } from "langchain/stores/message/in_memory";
 import { RunnableSequence } from "@langchain/core/runnables";
 import fetchMovies from "./functions/getMovieImages.js";
 //memory imports
@@ -16,8 +10,7 @@ import { BufferMemory } from "langchain/memory";
 import { UpstashRedisChatMessageHistory } from "@langchain/community/stores/message/upstash_redis";
 
 const router = express.Router();
-// POST endpoint for user input
-const chatHistory = new ChatMessageHistory();
+
 router.post('/recommendations', async (req, res) => {
     try {
 
@@ -134,7 +127,7 @@ router.post('/recommendations', async (req, res) => {
         // Function to fetch movie details and add poster path
         const movieImages = await fetchMovies(movieRecommendations);
 
-
+        console.log(movieRecommendations);
 
         res.json({main: movieImages, chatInfo: movieRecommendations.chatInfo, totalTokens: totalTokens});
 
