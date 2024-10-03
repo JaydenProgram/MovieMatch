@@ -4,7 +4,7 @@
 ## Introduction
 Welcome to MovieMatch (OG), a movie recommendation system that recommends movies based on your preference. This is a school project, using Langchain JS with OpenAI.
 
-![alt text](https://github.com/JaydenProgram/MovieMatch/blob/main/moviematch-thumbnail.png?raw=true)
+![thumbnail](https://github.com/JaydenProgram/MovieMatch/blob/main/front/src/assets/movematch-thumbnail.png?raw=true)
 
 ## Features
 
